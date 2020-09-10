@@ -12,6 +12,13 @@ const render = require("./lib/htmlRenderer");
 
 const teamArray = [];
 
+const renderHtml = () => {
+  const renderedHtml = render(teamArray);
+  fs.writeFile(outputPath, renderedHtml, (err) => {
+    if (err) throw err;
+    console.log("'team.html' has been written! Open the 'output' folder");
+  });
+};
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
@@ -55,20 +62,17 @@ const recursiveAdd = (teamMember) => {
         teamArray.push(newMember);
         if (!(inq.addMore === "I don't want to add any more team members.")) {
           if (inq.addMore === "Intern") {
-            console.log("I'm adding a new intern...");
+            console.log("adding a new intern...");
             recursiveAdd("Intern");
           } else {
             // "engineer"
-            console.log("I'm adding a new engineer...");
+            console.log("adding a new engineer...");
             recursiveAdd("Engineer");
           }
         } else {
-          // all done
           // CALL RENDER; WE ARE DONE ADDING
-          console.log("We are done adding members!");
-          teamArray.forEach((employee) => {
-            console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
-          });
+          console.log("rendering...");
+          renderHtml();
         }
       });
   } else {
@@ -110,27 +114,24 @@ const recursiveAdd = (teamMember) => {
         teamArray.push(newMember);
         if (!(inq.addMore === "I don't want to add any more team members.")) {
           if (inq.addMore === "Intern") {
-            console.log("I'm adding a new intern...");
+            console.log("adding a new intern...");
             recursiveAdd("Intern");
           } else {
             // "engineer"
-            console.log("I'm adding a new engineer...");
+            console.log("adding a new engineer...");
             recursiveAdd("Engineer");
           }
         } else {
-          // all done
           // CALL RENDER; WE ARE DONE ADDING
-          console.log("We are done adding members!");
-          teamArray.forEach((employee) => {
-            console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
-          });
+          console.log("rendering...");
+          renderHtml();
         }
       });
   }
 };
 
 const beginPrompts = () => {
-  console.log("Please build your team");
+  console.log("Please build your team!");
   inquirer
     .prompt([
       {
@@ -176,21 +177,15 @@ const beginPrompts = () => {
       teamArray.push(newManager);
       if (!(inq.addMore === "I don't want to add any more team members.")) {
         // add either an intern or an engineer
-        console.log("I DO WANT TO ADD MORE");
         if (inq.addMore === "Intern") {
-          console.log("I chose an intern");
           recursiveAdd("Intern");
         } else {
-          console.log("I chose an engineer");
           recursiveAdd("Engineer");
         }
       } else {
-        console.log("I SAID I don't want to add any more team members.");
-        console.log("We are done adding members!");
-        teamArray.forEach((employee) => {
-          console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
-        });
-        // CALL RENDER FUNCTION HERE WITH ONLY THE MANAGER POPULATED.
+        // CALL RENDER; WE ARE DONE ADDING
+        console.log("rendering...");
+        renderHtml();
       }
     });
 };
