@@ -10,10 +10,192 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const teamArray = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+const recursiveAdd = (teamMember) => {
+  if (teamMember === "Intern") {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is your intern's name?",
+          name: "name",
+        },
+        {
+          type: "input",
+          message: "What is your intern's id?",
+          name: "id",
+        },
+        {
+          type: "input",
+          message: "What is your intern's email?",
+          name: "email",
+        },
+        {
+          type: "input",
+          message: "What is your intern's school?",
+          name: "school",
+        },
+        {
+          type: "list",
+          message: "Which type of team member would you like to add?",
+          name: "addMore",
+          choices: [
+            "Intern",
+            "Engineer",
+            "I don't want to add any more team members.",
+          ],
+        },
+      ])
+      .then((inq) => {
+        const newMember = new Intern(inq.name, inq.id, inq.email, inq.school);
+        teamArray.push(newMember);
+        if (!(inq.addMore === "I don't want to add any more team members.")) {
+          if (inq.addMore === "Intern") {
+            console.log("I'm adding a new intern...");
+            recursiveAdd("Intern");
+          } else {
+            // "engineer"
+            console.log("I'm adding a new engineer...");
+            recursiveAdd("Engineer");
+          }
+        } else {
+          // all done
+          // CALL RENDER; WE ARE DONE ADDING
+          console.log("We are done adding members!");
+          teamArray.forEach((employee) => {
+            console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
+          });
+        }
+      });
+  } else {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is your engineer's name?",
+          name: "name",
+        },
+        {
+          type: "input",
+          message: "What is your engineer's id?",
+          name: "id",
+        },
+        {
+          type: "input",
+          message: "What is your engineer's email?",
+          name: "email",
+        },
+        {
+          type: "input",
+          message: "What is your engineer's github username?",
+          name: "github",
+        },
+        {
+          type: "list",
+          message: "Which type of team member would you like to add?",
+          name: "addMore",
+          choices: [
+            "Intern",
+            "Engineer",
+            "I don't want to add any more team members.",
+          ],
+        },
+      ])
+      .then((inq) => {
+        const newMember = new Engineer(inq.name, inq.id, inq.email, inq.github);
+        teamArray.push(newMember);
+        if (!(inq.addMore === "I don't want to add any more team members.")) {
+          if (inq.addMore === "Intern") {
+            console.log("I'm adding a new intern...");
+            recursiveAdd("Intern");
+          } else {
+            // "engineer"
+            console.log("I'm adding a new engineer...");
+            recursiveAdd("Engineer");
+          }
+        } else {
+          // all done
+          // CALL RENDER; WE ARE DONE ADDING
+          console.log("We are done adding members!");
+          teamArray.forEach((employee) => {
+            console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
+          });
+        }
+      });
+  }
+};
+
+const beginPrompts = () => {
+  console.log("Please build your team");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is your manager's name?",
+        name: "name",
+      },
+      {
+        type: "input",
+        message: "What is your manager's id?",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "What is your manager's email?",
+        name: "email",
+      },
+      {
+        type: "input",
+        message: "What is your manager's office number?",
+        name: "officeNum",
+      },
+      {
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "addMore",
+        choices: [
+          "Intern",
+          "Engineer",
+          "I don't want to add any more team members.",
+        ],
+      },
+    ])
+    .then((inq) => {
+      // create a Manager object
+      const newManager = new Manager(
+        inq.name,
+        inq.id,
+        inq.email,
+        inq.officeNum
+      );
+      // push manager into running array of employees
+      teamArray.push(newManager);
+      if (!(inq.addMore === "I don't want to add any more team members.")) {
+        // add either an intern or an engineer
+        console.log("I DO WANT TO ADD MORE");
+        if (inq.addMore === "Intern") {
+          console.log("I chose an intern");
+          recursiveAdd("Intern");
+        } else {
+          console.log("I chose an engineer");
+          recursiveAdd("Engineer");
+        }
+      } else {
+        console.log("I SAID I don't want to add any more team members.");
+        console.log("We are done adding members!");
+        teamArray.forEach((employee) => {
+          console.log(`${employee.name}: ${employee.id}: ${employee.email}`);
+        });
+        // CALL RENDER FUNCTION HERE WITH ONLY THE MANAGER POPULATED.
+      }
+    });
+};
+
+beginPrompts();
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
