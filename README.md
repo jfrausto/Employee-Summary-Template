@@ -1,2 +1,3 @@
-# Employee-Summary-Template
+# Employee Summary Template
+
 This CLI application
