@@ -19,6 +19,23 @@ const renderHtml = () => {
     console.log("'team.html' has been written! Open the 'output' folder");
   });
 };
+
+// validating function for strings
+const stringValidator = (input) => {
+  if (!isNaN(input)) {
+    return "Error: Enter a string!";
+  } else {
+    return true;
+  }
+};
+
+const intValidator = (input) => {
+  if (isNaN(input)) {
+    return "Error: Enter a number!";
+  } else {
+    return true;
+  }
+};
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
@@ -30,21 +47,25 @@ const recursiveAdd = (teamMember) => {
           type: "input",
           message: "What is your intern's name?",
           name: "name",
+          validate: stringValidator,
         },
         {
           type: "input",
           message: "What is your intern's id?",
           name: "id",
+          validate: intValidator,
         },
         {
           type: "input",
           message: "What is your intern's email?",
           name: "email",
+          validate: stringValidator,
         },
         {
           type: "input",
           message: "What is your intern's school?",
           name: "school",
+          validate: stringValidator,
         },
         {
           type: "list",
@@ -82,21 +103,25 @@ const recursiveAdd = (teamMember) => {
           type: "input",
           message: "What is your engineer's name?",
           name: "name",
+          validate: stringValidator,
         },
         {
           type: "input",
           message: "What is your engineer's id?",
           name: "id",
+          validate: intValidator,
         },
         {
           type: "input",
           message: "What is your engineer's email?",
           name: "email",
+          validate: stringValidator,
         },
         {
           type: "input",
           message: "What is your engineer's github username?",
           name: "github",
+          validate: stringValidator,
         },
         {
           type: "list",
@@ -138,21 +163,25 @@ const beginPrompts = () => {
         type: "input",
         message: "What is your manager's name?",
         name: "name",
+        validate: stringValidator,
       },
       {
         type: "input",
         message: "What is your manager's id?",
         name: "id",
+        validate: intValidator,
       },
       {
         type: "input",
         message: "What is your manager's email?",
         name: "email",
+        validate: stringValidator,
       },
       {
         type: "input",
         message: "What is your manager's office number?",
         name: "officeNum",
+        validate: intValidator,
       },
       {
         type: "list",
